@@ -23,6 +23,45 @@ class CustomerController extends Controller
             'index' => $customer
         ]);
     }
+
+    // New method for backend customer detail page with order graph
+    public function detail($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return view('backend.v_customer.detail', [
+            'judul' => 'Detail Customer',
+            'subJudul' => 'Detail dan Grafik Pesanan Customer',
+            'customer' => $customer,
+        ]);
+    }
+
+    // New method to provide JSON order data for specific customer
+    public function grafikData($id)
+    {
+        $startDate = now()->subDays(30)->startOfDay();
+        $endDate = now()->endOfDay();
+
+        $orders = $customerOrders = \App\Models\Order::selectRaw('DATE(created_at) as date, COUNT(*) as total')
+            ->where('customer_id', $id)
+            ->whereIn('status', ['Paid', 'Kirim', 'Selesai'])
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        $period = \Carbon\CarbonPeriod::create($startDate, $endDate);
+        $data = [];
+        foreach ($period as $date) {
+            $dateStr = $date->format('Y-m-d');
+            $found = $orders->firstWhere('date', $dateStr);
+            $data[] = [
+                'date' => $dateStr,
+                'total' => $found ? $found->total : 0,
+            ];
+        }
+
+        return response()->json($data);
+    }
     public function redirect()
     {
         return Socialite::driver('google')->redirect();
@@ -102,6 +141,72 @@ class CustomerController extends Controller
             'edit' => $customer,
             'userData' => $userData,
         ]);
+    }
+
+    public function edit($id)
+    {
+        $customer = Customer::findOrFail($id);
+        return view('backend.v_customer.edit', [
+            'judul' => 'Edit Customer',
+            'edit' => $customer,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $customer = Customer::findOrFail($id);
+
+        $rules = [
+            'nama' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $customer->user_id,
+            'hp' => 'required|min:10|max:13',
+            'alamat' => 'required',
+            'pos' => 'required',
+            'foto' => 'image|mimes:jpeg,jpg,png,gif|file|max:1024',
+        ];
+
+        $messages = [
+            'foto.image' => 'Format gambar gunakan file dengan ekstensi jpeg, jpg, png, atau gif.',
+            'foto.max' => 'Ukuran file gambar maksimal adalah 1024 KB.'
+        ];
+
+        $validatedData = $request->validate($rules, $messages);
+
+        // Update user data
+        $user = $customer->user;
+        $user->nama = $request->nama;
+        $user->email = $request->email;
+        $user->hp = $request->hp;
+
+        if ($request->file('foto')) {
+            // Hapus gambar lama jika ada
+            if ($user->foto) {
+                $oldImagePath = public_path('storage/img-customer/') . $user->foto;
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+
+            // Proses upload gambar baru
+            $file = $request->file('foto');
+            $extension = $file->getClientOriginalExtension();
+            $originalFileName = date('YmdHis') . '_' . uniqid() . '.' . $extension;
+            $directory = 'storage/img-customer/';
+
+            // Simpan gambar dengan ukuran yang ditentukan
+            \App\Helpers\ImageHelper::uploadAndResize($file, $directory, $originalFileName, 385, 400);
+
+            $user->foto = $originalFileName;
+        }
+
+        $user->save();
+
+        // Update customer data
+        $customer->alamat = $request->alamat;
+        $customer->pos = $request->pos;
+        $customer->save();
+
+        return redirect()->route('backend.customer.index')->with('success', 'Data customer berhasil diperbarui.');
     }
 
     public function updateAkun(Request $request, $id)

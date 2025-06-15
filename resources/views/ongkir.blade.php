@@ -23,11 +23,11 @@
         </select>
         <button type="submit">Cek Ongkir</button>
     </form>
+
     <div id="result"></div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Fetch provinces
             fetch('/provinces')
                 .then(response => response.json())
                 .then(data => {
@@ -49,7 +49,6 @@
                     console.error('Error fetching provinces:', error);
                 });
 
-            // Fetch cities based on selected province
             document.getElementById('province').addEventListener('change', function() {
                 let provinceId = this.value;
                 fetch(`/cities?province_id=${provinceId}`)
@@ -59,7 +58,7 @@
                         if (data.rajaongkir.status.code === 200) {
                             let cities = data.rajaongkir.results;
                             let citySelect = document.getElementById('city');
-                            citySelect.innerHTML = ''; // Clear previous options
+                            citySelect.innerHTML = '';
                             cities.forEach(city => {
                                 let option = document.createElement('option');
                                 option.value = city.city_id;
@@ -75,10 +74,9 @@
                     });
             });
 
-            // Handle form submission
             document.getElementById('ongkirForm').addEventListener('submit', function(event) {
                 event.preventDefault();
-                let origin = 501; // Kode kota asal
+                let origin = 501; // Kode kota asal 
                 let destination = document.getElementById('city').value;
                 let weight = document.getElementById('weight').value;
                 let courier = document.getElementById('courier').value;
@@ -103,7 +101,7 @@
                         if (data.rajaongkir.status.code === 200) {
                             let result = data.rajaongkir.results[0].costs;
                             let resultDiv = document.getElementById('result');
-                            resultDiv.innerHTML = ''; // Clear previous results
+                            resultDiv.innerHTML = '';
                             result.forEach(cost => {
                                 let div = document.createElement('div');
                                 div.textContent =
