@@ -26,9 +26,13 @@
                             <td>Rp. {{ number_format($row->total_harga + $row->biaya_ongkir, 0, ',', '.') }}</td>
                             <td>
                                 @if ($row->status == 'Paid')
-                                <span class="badge badge-primary"></i> Proses </span>
+                                <span class="badge badge-success">Proses</span>
+                                @elseif($row->status == 'Kirim')
+                                <span class="badge badge-info">Kirim</span>
+                                @elseif($row->status == 'Selesai')
+                                <span class="badge badge-primary">Selesai</span>
                                 @else
-                                <span class="badge badge-warning" style="color: white;"></i> {{ $row->status }} </span>
+                                <span class="badge badge-secondary">Status Tidak Dikenal</span>
                                 @endif
                             </td>
                             <td> {{ $row->customer->email }} </td>

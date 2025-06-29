@@ -265,7 +265,7 @@ class ProdukController extends Controller
     // Method untuk Cetak Laporan Produk
     public function cetakProduk(Request $request)
     {
-        // Menambahkan aturan validasi
+        // Validasi input tanggal
         $request->validate([
             'tanggal_awal' => 'required|date',
             'tanggal_akhir' => 'required|date|after_or_equal:tanggal_awal',
@@ -274,25 +274,32 @@ class ProdukController extends Controller
             'tanggal_akhir.required' => 'Tanggal Akhir harus diisi.',
             'tanggal_akhir.after_or_equal' => 'Tanggal Akhir harus lebih besar atau sama dengan Tanggal Awal.',
         ]);
-        $tanggalAwal = $request->input('tanggal_awal');
-        $tanggalAkhir = $request->input('tanggal_akhir');
-        $query = Produk::whereBetween('updated_at', [$tanggalAwal, $tanggalAkhir])
-            ->orderBy('id', 'desc');
-        $produk = $query->get();
+
+        // Ambil input dan tambahkan waktu agar mencakup seluruh hari
+        $tanggalAwal = $request->input('tanggal_awal') . ' 00:00:00';
+        $tanggalAkhir = $request->input('tanggal_akhir') . ' 23:59:59';
+
+        // Query produk berdasarkan updated_at dalam rentang tanggal
+        $produk = Produk::whereBetween('updated_at', [$tanggalAwal, $tanggalAkhir])
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // Kirim data ke view
         return view('backend.v_produk.cetak', [
             'judul' => 'Laporan Produk',
-            'tanggalAwal' => $tanggalAwal,
-            'tanggalAkhir' => $tanggalAkhir,
+            'tanggalAwal' => $request->input('tanggal_awal'),
+            'tanggalAkhir' => $request->input('tanggal_akhir'),
             'cetak' => $produk
         ]);
     }
+
 
     public function detail($id)
     {
         $fotoProdukTambahan = FotoProduk::where('produk_id', $id)->get();
         $detail = Produk::findOrFail($id);
         $kategori = Kategori::orderBy('nama_kategori', 'desc')->get();
-    
+
         return view('v_produk.detail', [
             'judul' => 'Detail Produk',
             'kategori' => $kategori,
@@ -329,5 +336,4 @@ class ProdukController extends Controller
             'produk' => $produk,
         ]);
     }
-
 }

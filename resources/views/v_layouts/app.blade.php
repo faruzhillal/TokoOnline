@@ -257,11 +257,12 @@
                         <!-- widget product -->
                         <div class="product product-widget">
                             <div class="product-thumb">
-                                <img src="{{ asset('frontend/img/thumb-product01.jpg') }}" alt="">
+                                <img src="https://png.pngtree.com/png-clipart/20230622/original/pngtree-vector-illustration-omelette-market-snacks-png-image_9203657.png"
+                                    alt="Jajanan Kampung">
                             </div>
                             <div class="product-body">
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
+                                <h2 class="product-name"><a href="#">Jajanan Kampung</a></h2>
+                                <h3 class="product-price">Rp. 5.000 <del class="product-old-price">Rp. 10.000</del></h3>
                                 <div class="product-rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -276,11 +277,12 @@
                         <!-- widget product -->
                         <div class="product product-widget">
                             <div class="product-thumb">
-                                <img src="{{ asset('frontend/img/thumb-product01.jpg') }}" alt="">
+                                <img src="https://png.pngtree.com/png-clipart/20230213/ourmid/pngtree-my-tok-cake-is-a-market-snack-png-image_6598585.png"
+                                    alt="Jajanan Kampung">
                             </div>
                             <div class="product-body">
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <h3 class="product-price">$32.50</h3>
+                                <h2 class="product-name"><a href="#">Jajanan Kampung</a></h2>
+                                <h3 class="product-price">Rp. 10.000</h3>
                                 <div class="product-rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>

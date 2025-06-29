@@ -12,8 +12,8 @@
                 <strong>Tanggal:</strong> {{ $order->created_at->format('d M Y H:i') }}
             </div>
             <form action="{{ route('pesanan.update', $order->id) }}" method="post">
-                @method('put')
                 @csrf
+                @method('PUT')
                 <hr>
                 <div class="row">
                     <div class="col-xs-12 col-sm-12 col-md-6">
@@ -74,7 +74,8 @@
                                         <a> {{ $item->quantity }} </a>
                                     </td>
                                     <td class="total text-center">Rp.
-                                        {{ number_format($item->harga * $item->quantity, 0, ',', '.') }}</td>
+                                        {{ number_format($item->harga * $item->quantity, 0, ',', '.') }}
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -93,7 +94,8 @@
                                     <th class="empty" colspan="3"></th>
                                     <th>TOTAL BAYAR</th>
                                     <th colspan="2" class="total">Rp.
-                                        {{ number_format($totalHarga + $order->biaya_ongkir, 0, ',', '.') }}</th>
+                                        {{ number_format($totalHarga + $order->biaya_ongkir, 0, ',', '.') }}
+                                    </th>
                                 </tr>
                             </tfoot>
                         </table>

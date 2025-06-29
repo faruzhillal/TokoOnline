@@ -19,7 +19,8 @@ class OrderController extends Controller
     public function statusProses()
     {
         //backend
-        $order = Order::whereIn('status', ['Paid', 'Kirim'])->orderBy('id', 'desc')->get();
+        $order = Order::whereIn('status', ['Paid', 'Kirim', 'Selesai'])->orderBy('id', 'desc')->get();
+        // dd($order);
         return view('backend.v_pesanan.proses', [
             'judul' => 'Pesanan',
             'subJudul' => 'Pesanan Proses',
@@ -90,6 +91,7 @@ class OrderController extends Controller
 
     public function statusUpdate(Request $request, string $id)
     {
+        // dd($request);
         $order = Order::findOrFail($id);
         $rules = [
             'alamat' => 'required',
@@ -167,7 +169,7 @@ class OrderController extends Controller
         //kurangi stok
         if ($order) {
             foreach ($order->orderItems as $item) {
-                $produk = $item->produk;
+                $produk = $item->produk->pluck('stock')->first();
                 if ($produk->stok >= $item->quantity) {
                     $produk->stok -= $item->quantity;
                     $produk->save();

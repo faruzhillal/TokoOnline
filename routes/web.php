@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PesananController;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\RajaOngkirController;
 
@@ -114,3 +115,14 @@ Route::post('/cost', [RajaOngkirController::class, 'getCost']);
 
 Route::get('/ongkir/get-destination', [OrderController::class, 'getDestination']);
 Route::post('/ongkir/calculate', [OrderController::class, 'calculateOngkir']);
+
+// Route untuk proses pesanan produk
+Route::get('backend/pesanan/proses', [OrderController::class, 'statusProses'])->name('backend.pesanan.proses')->middleware('auth');
+Route::get('backend/pesanan/detail/{id}', [OrderController::class, 'statusDetail'])->name('pesanan.detail')->middleware('auth');
+Route::get('backend/pesanan/invoice/{id}', [OrderController::class, 'invoiceBackend'])->name('pesanan.invoice')->middleware('auth');
+Route::put('/pesanan/update/{id}', [OrderController::class, 'statusUpdate'])->name('pesanan.update');
+Route::get('/pesanan/proses', [OrderController::class, 'statusProses'])->name('pesanan.proses');
+
+// Route untuk laporan pesanan
+Route::get('backend/laporan/formpesanan', [PesananController::class, 'formPesanan'])->name('backend.laporan.formpesanan')->middleware('auth');
+Route::post('backend/laporan/cetakpesanan', [PesananController::class, 'cetakPesanan'])->name('backend.laporan.cetakpesanan')->middleware('auth');
