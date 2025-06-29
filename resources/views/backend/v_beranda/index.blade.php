@@ -19,7 +19,7 @@
                     ini adalah halaman utama dari aplikasi Web Programming. Studi Kasus
                     Toko Online.
                     <hr>
-                    <p class="mb-0">Kuliah..? BSI Aja !!!</p>
+                    <!-- <p class="mb-0">Kuliah..? BSI Aja !!!</p> -->
                 </div>
             </div>
         </div>

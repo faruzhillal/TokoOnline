@@ -19,9 +19,9 @@
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <h5>Pelanggan</h5>
                         <address>
-                            Nama: {{$order->customer->nama}}<br>
-                            Email: {{$order->customer->email}}<br>
-                            Hp: {{$order->customer->hp}}<br>
+                            Nama: {{ optional($order->customer->user)->nama ?? 'Tidak ada nama' }}<br>
+                            Email: {{ optional($order->customer->user)->email ?? 'Tidak ada email' }}<br>
+                            Hp: {{ optional($order->customer->user)->hp ?? 'Tidak ada hp' }}<br>
                         </address>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 text-right">

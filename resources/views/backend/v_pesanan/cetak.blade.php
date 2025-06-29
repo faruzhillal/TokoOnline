@@ -49,8 +49,8 @@
         @foreach ($order->orderItems as $item)
         <tr>
             <td>{{ $no++ }}</td>
-            <td>{{ $order->customer->user->nama }}</td>
-            <td>{{ $order->customer->user->email }}</td>
+            <td>{{ optional($order->customer->user)->nama ?? 'Tidak ada nama' }}</td>
+            <td>{{ optional($order->customer->user)->email ?? 'Tidak ada email' }}</td>
             <td>{!! $order->alamat !!}</td>
             <td>{{ $item->produk->nama_produk }}</td>
             <td>Rp. {{ number_format($item->harga, 0, ',', '.') }}</td>

@@ -18,7 +18,7 @@
 <table>
     <tr>
         <td align="left">
-            <img src="{{ asset('image/logo.png') }}" width="8%">
+            <img src="{{ asset('image/berandaIcon.png') }}" width="20%">
         </td>
     </tr>
     <tr>
@@ -35,9 +35,9 @@
         <td align="left" style="border: hidden;">
             <h5>Pelanggan</h5>
             <address>
-                Nama: {{ $order->customer->user->nama }}<br>
-                Email: {{ $order->customer->email }}<br>
-                Hp: {{ $order->customer->hp }}<br>
+                Nama: {{ optional($order->customer->user)->nama ?? 'Tidak ada nama' }}<br>
+                Email: {{ optional($order->customer->user)->email ?? 'Tidak ada email' }}<br>
+                Hp: {{ optional($order->customer->user)->hp ?? 'Tidak ada hp' }}<br>
                 Alamat: <br>{!! $order->alamat !!} <br>
                 Kode Pos: {{ $order->pos }}
             </address>

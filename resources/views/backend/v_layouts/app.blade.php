@@ -62,8 +62,10 @@
 
                         <span class="logo-text">
                             <!-- dark Logo text -->
-                            <img src="{{ asset('image/dasboardIcon.png') }}" style="width: 230px;" alt="homepage"
-                                class="light-logo" />
+                            <a href="{{ route('backend.beranda') }}">
+                                <img src="{{ asset('image/dasboardIcon.png') }}" style="width: 230px;" alt="homepage"
+                                    class="light-logo" />
+                            </a>
 
                         </span>
 
@@ -261,9 +263,9 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer text-center">
+            <!-- <footer class="footer text-center">
                 Web Programming. Studi Kasus Toko Online <a href="https://bsi.ac.id/">Kuliah..? BSI Aja !!!</a>
-            </footer>
+            </footer> -->
 
             <!-- ============================================================== -->
             <!-- End footer -->

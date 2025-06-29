@@ -9,7 +9,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon.png') }}">
-    <title>Dashboard Dapur Qinzy</title>
+    <title>Dapur Qinzy</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">

@@ -13,14 +13,19 @@ use Symfony\Contracts\Service\Attribute\Required;
 use Illuminate\Support\Facades\Http;
 use Midtrans\Snap;
 use Midtrans\Config;
+use Illuminate\Support\Facades\Log;
+
 
 class OrderController extends Controller
 {
     public function statusProses()
     {
-        //backend
-        $order = Order::whereIn('status', ['Paid', 'Kirim', 'Selesai'])->orderBy('id', 'desc')->get();
-        // dd($order);
+        $order = Order::with('customer.user') // relasi berantai
+            ->whereIn('status', ['Paid', 'Kirim', 'Selesai'])
+            ->orderBy('id', 'desc')
+            ->get();
+        // dd(optional($order->first()->customer->user));
+
         return view('backend.v_pesanan.proses', [
             'judul' => 'Pesanan',
             'subJudul' => 'Pesanan Proses',
@@ -80,7 +85,8 @@ class OrderController extends Controller
 
     public function statusDetail($id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with('customer.user')->findOrFail($id);
+        // dd(optional($order->first()->customer->user));
         return view('backend.v_pesanan.detail', [
             'judul' => 'Pesanan',
             'subJudul' => 'Pesanan Proses',
@@ -284,8 +290,8 @@ class OrderController extends Controller
     {
         $customer = Auth::user();
         $order = Order::where('customer_id', $customer->customer->id)->where('status', 'pending')->first();
-        if ($order) {
-            $order->load('orderItems.produk');
+        if (!$order) {
+            return redirect()->route('cart')->with('error', 'Tidak ada pesanan yang menunggu pembayaran.');
         }
         // Pastikan total_price sudah dihitung dengan benar
         $totalHarga = 0;
@@ -312,6 +318,11 @@ class OrderController extends Controller
                 'phone' => $customer->hp,
             ],
         ];
+
+
+        foreach ($order->orderItems as $item) {
+            $produk = $item->produk;
+        }
         $snapToken = Snap::getSnapToken($params);
         return view('v_order.select_payment', [
             'order' => $order,
@@ -321,15 +332,29 @@ class OrderController extends Controller
 
     public function callback(Request $request)
     {
-        dd($request->all());
+        // Ambil data dari Midtrans
+        Log::info('CALLBACK RECEIVED:', $request->all());
         $serverKey = config('midtrans.server_key');
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+
         if ($hashed == $request->signature_key) {
-            $order = Order::find($request->order_id);
-            if ($order) {
+            // Pecah order_id seperti "15-1719701220" → ambil hanya ID = 15
+            $realOrderId = explode('-', $request->order_id)[0];
+
+            $order = Order::with('orderItems.produk')->find($realOrderId);
+
+            if ($order && $request->transaction_status == 'settlement') {
                 $order->update(['status' => 'Paid']);
+
+                // Kurangi stok produk
+                foreach ($order->orderItems as $item) {
+                    $item->produk->stok -= $item->quantity;
+                    $item->produk->save();
+                }
             }
         }
+
+        return response()->json(['message' => 'Callback processed'], 200);
     }
 
     public function complete()
@@ -350,6 +375,7 @@ class OrderController extends Controller
     public function cetakOrderProses(Request $request)
     {
         // Menambahkan aturan validasi
+        // dd($request);
         $request->validate([
             'tanggal_awal' => 'required|date',
             'tanggal_akhir' => 'required|date|after_or_equal:tanggal_awal',
@@ -360,7 +386,11 @@ class OrderController extends Controller
         ]);
         $tanggalAwal = $request->input('tanggal_awal');
         $tanggalAkhir = $request->input('tanggal_akhir');
-        $order = Order::whereIn('status', ['Paid', 'Kirim'])->orderBy('id', 'desc')->get();
+        $order = Order::with('customer.user') // relasi berantai
+            ->whereIn('status', ['Paid', 'Kirim', 'Selesai'])
+            ->orderBy('id', 'desc')
+            ->get();
+
         return view('backend.v_pesanan.cetakproses', [
             'judul' => 'Laporan',
             'subJudul' => 'Laporan Pesanan Proses',
