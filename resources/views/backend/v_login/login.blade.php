@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon_univ_bsi.png') }}">
-    <title>Tokoonline</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon.png') }}">
+    <title>Dashboard Dapur Qinzy</title>
     <!-- Custom CSS -->
     <link href="{{ asset('backend/dist/css/style.min.css') }}" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -30,12 +30,12 @@
         </div>
 
         <!-- Login Box -->
-        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-dark">
-            <div class="auth-box bg-dark border-top border-secondary">
+        <div class="auth-wrapper d-flex no-block justify-content-center align-items-center bg-gray-100">
+            <div class="auth-box border-top border-secondary shadow-lg">
                 <div id="loginform">
                     <div class="text-center p-t-20 p-b-20">
                         <span class="db">
-                            <img src="{{ asset('backend/images/logo.png') }}" alt="logo" />
+                            <img src="{{ asset('image/berandaIcon.png') }}" style="width: 280px;" alt="logo" />
                         </span>
                     </div>
                     <!-- Error Message -->
@@ -134,19 +134,19 @@
     <script src="{{ asset('backend/libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 
     <script>
-    // Tooltip
-    $('[data-toggle="tooltip"]').tooltip();
-    $(".preloader").fadeOut();
+        // Tooltip
+        $('[data-toggle="tooltip"]').tooltip();
+        $(".preloader").fadeOut();
 
-    // Login and Recover Password
-    $('#to-recover').on("click", function() {
-        $("#loginform").slideUp();
-        $("#recoverform").fadeIn();
-    });
-    $('#to-login').click(function() {
-        $("#recoverform").hide();
-        $("#loginform").fadeIn();
-    });
+        // Login and Recover Password
+        $('#to-recover').on("click", function() {
+            $("#loginform").slideUp();
+            $("#recoverform").fadeIn();
+        });
+        $('#to-login').click(function() {
+            $("#recoverform").hide();
+            $("#loginform").fadeIn();
+        });
     </script>
 </body>
 

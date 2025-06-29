@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon_univ_bsi.png') }}">
-    <title>tokoonline</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon.png') }}">
+    <title>Dashboard Dapur Qinzy</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
@@ -64,8 +64,8 @@
                 <div class="pull-left">
                     <!-- Logo -->
                     <div class="header-logo">
-                        <a class="logo" href="#">
-                            <img src="{{ asset('image/logo.png') }}" alt="">
+                        <a href="{{ route('beranda') }}">
+                            <img src="{{ asset('image/berandaIcon.png') }}" style="width: 280px;" alt="">
                         </a>
                     </div>
                     <!-- /Logo -->

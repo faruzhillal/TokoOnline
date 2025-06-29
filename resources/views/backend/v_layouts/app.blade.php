@@ -9,8 +9,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon_univ_bsi.png') }}">
-    <title>tokoonline</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('image/icon.png') }}">
+    <title>Dashboard Dapur Qinzy</title>
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{{ asset('backend/extra-libs/multicheck/multicheck.css') }}">
     <link href="{{ asset('backend/libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet">
@@ -51,19 +51,22 @@
                     <!-- ============================================================== -->
                     <a class="navbar-brand" href="index.html">
                         <!-- Logo icon -->
-                        <b class="logo-icon p-l-10">
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon -->
-                            <img src="{{ asset('image/icon_univ_bsi.png') }}" alt="homepage" class="light-logo" />
+                        <!-- <b class="logo-icon p-l-10"> -->
+                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                        <!-- Dark Logo icon -->
+                        <!-- <img src="{{ asset('image/icon.png') }}" alt="homepage" class="light-logo" /> -->
 
-                        </b>
+                        <!-- </b> -->
                         <!--End Logo icon -->
                         <!-- Logo text -->
+
                         <span class="logo-text">
                             <!-- dark Logo text -->
-                            <img src="{{ asset('image/logo_text.png') }}" alt="homepage" class="light-logo" />
+                            <img src="{{ asset('image/dasboardIcon.png') }}" style="width: 230px;" alt="homepage"
+                                class="light-logo" />
 
                         </span>
+
                         <!-- Logo icon -->
                         <!-- <b class="logo-icon"> -->
                         <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
