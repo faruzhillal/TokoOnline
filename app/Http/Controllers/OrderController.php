@@ -332,21 +332,17 @@ class OrderController extends Controller
 
     public function callback(Request $request)
     {
-        // Ambil data dari Midtrans
-        Log::info('CALLBACK RECEIVED:', $request->all());
         $serverKey = config('midtrans.server_key');
         $hashed = hash("sha512", $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
 
         if ($hashed == $request->signature_key) {
             // Pecah order_id seperti "15-1719701220" → ambil hanya ID = 15
             $realOrderId = explode('-', $request->order_id)[0];
-
             $order = Order::with('orderItems.produk')->find($realOrderId);
 
             if ($order && $request->transaction_status == 'settlement') {
                 $order->update(['status' => 'Paid']);
 
-                // Kurangi stok produk
                 foreach ($order->orderItems as $item) {
                     $item->produk->stok -= $item->quantity;
                     $item->produk->save();

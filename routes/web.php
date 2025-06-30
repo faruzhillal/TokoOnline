@@ -83,7 +83,7 @@ Route::middleware('is.customer')->group(function () {
     Route::post('update-ongkir', [OrderController::class, 'updateOngkir'])->name('order.update-ongkir');
     //midtrans
     Route::get('select-payment', [OrderController::class, 'selectPayment'])->name('order.selectpayment');
-    Route::post('/midtrans-callback', [OrderController::class, 'callback']);
+
     Route::get('/order/complete', [OrderController::class, 'complete'])->name('order.complete');
     // Route history
     Route::get('history', [OrderController::class, 'orderHistory'])->name('order.history');
